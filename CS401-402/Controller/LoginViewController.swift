@@ -16,7 +16,6 @@ class LoginViewController : UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
     }
 
     override func didReceiveMemoryWarning() {
@@ -27,8 +26,11 @@ class LoginViewController : UIViewController {
     @IBAction func loginButtonClicked(_ sender: Any) {
         if(emailTextField.text != "" && passwordTextField.text != "") {
             Auth.auth().signIn(withEmail: emailTextField.text!, password: passwordTextField.text!, completion: { user, error in
-                if(error == nil) {
+                if(error == nil && Auth.auth().currentUser != nil) {
                     print("You have successfully logged in")
+                    
+                    let tabBarViewController = self.storyboard?.instantiateViewController(withIdentifier: "TabBarViewController") as! CustomTabBarViewController
+                    self.present(tabBarViewController, animated: true, completion: nil)
                 } else {
                     let alert = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: UIAlertControllerStyle.alert)
                     
